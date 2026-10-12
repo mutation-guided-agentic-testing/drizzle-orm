@@ -5,7 +5,7 @@ const config = {
   reporters: ['html', 'clear-text', 'progress', 'dashboard', 'json'],
   testRunner: 'vitest',
   coverageAnalysis: 'perTest',
-  buildCommand: 'tsc --noEmit',
+  buildCommand: 'pnpm run build',
   plugins: [
     '@stryker-mutator/vitest-runner',
     '@stryker-mutator/typescript-checker',
