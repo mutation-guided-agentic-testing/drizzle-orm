@@ -6,6 +6,15 @@ on:
       - main
   pull_request:
   workflow_dispatch:
+    inputs:
+      publish_to_github:
+        description: 'Publish to GitHub Packages instead of npm'
+        type: boolean
+        default: false
+      packages:
+        description: 'Comma-separated list of packages to publish, or "all"'
+        type: string
+        default: 'all'
 
 jobs:
   switch:
@@ -35,6 +44,7 @@ jobs:
       PLANETSCALE_CONNECTION_STRING: ${{ secrets.PLANETSCALE_CONNECTION_STRING }}
       NEON_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
       # NEON_HTTP_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
+      NETLIFY_DB_URL: ${{ secrets.NETLIFY_DB_URL }}
       TIDB_CONNECTION_STRING: ${{ secrets.TIDB_CONNECTION_STRING }}
       XATA_API_KEY: ${{ secrets.XATA_API_KEY }}
       XATA_BRANCH: ${{ secrets.XATA_BRANCH }}
@@ -49,6 +59,7 @@ jobs:
       PLANETSCALE_CONNECTION_STRING: ${{ secrets.PLANETSCALE_CONNECTION_STRING }}
       NEON_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
       # NEON_HTTP_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
+      NETLIFY_DB_URL: ${{ secrets.NETLIFY_DB_URL }}
       TIDB_CONNECTION_STRING: ${{ secrets.TIDB_CONNECTION_STRING }}
       XATA_API_KEY: ${{ secrets.XATA_API_KEY }}
       XATA_BRANCH: ${{ secrets.XATA_BRANCH }}

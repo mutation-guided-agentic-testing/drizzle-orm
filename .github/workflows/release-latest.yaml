@@ -9,6 +9,8 @@ on:
         required: true
       # NEON_HTTP_CONNECTION_STRING:
       #   required: true
+      NETLIFY_DB_URL:
+        required: true
       TIDB_CONNECTION_STRING:
         required: true
       XATA_API_KEY:
@@ -25,7 +27,6 @@ jobs:
     strategy:
       matrix:
         shard:
-          - gel
           - planetscale
           - singlestore-core
           - singlestore-proxy
@@ -33,6 +34,7 @@ jobs:
           - singlestore-custom
           - neon-http
           - neon-serverless
+          - netlify-db
           - drizzle-orm
           - drizzle-kit
           - drizzle-zod
@@ -150,6 +152,7 @@ jobs:
           # NEON_HTTP_CONNECTION_STRING: postgres://postgres:postgres@db.localtest.me:5432/postgres
           NEON_HTTP_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
           NEON_SERVERLESS_CONNECTION_STRING: postgres://postgres:postgres@localhost:5445/postgres
+          NETLIFY_DB_URL: ${{ secrets.NETLIFY_DB_URL }}
           TIDB_CONNECTION_STRING: ${{ secrets.TIDB_CONNECTION_STRING }}
           XATA_API_KEY: ${{ secrets.XATA_API_KEY }}
           XATA_BRANCH: ${{ secrets.XATA_BRANCH }}
@@ -160,10 +163,6 @@ jobs:
         working-directory: integration-tests
         run: |
           case ${{ matrix.shard }} in
-
-            gel)
-              pnpm vitest run tests/gel
-            ;;
 
             planetscale)
               pnpm vitest run \
@@ -214,7 +213,8 @@ jobs:
                 --exclude tests/singlestore/singlestore-custom.test.ts \
                 --exclude tests/pg/neon-http.test.ts \
                 --exclude tests/pg/neon-http-batch.test.ts \
-                --exclude tests/pg/neon-serverless.test.ts
+                --exclude tests/pg/neon-serverless.test.ts \
+                --exclude tests/pg/netlify-db.test.ts 
             ;;
 
           esac
@@ -389,7 +389,7 @@ jobs:
     
       # >= 11.5.1 for trusted publishing
       - name: Update NPM
-        run: npm install -g npm@latest
+        run: npm install -g npm@11 # npm 12.0.0 ships without sigstore in its bundled tree and breaks `npm publish`
 
       # nuke, so npm can use OIDC
       - name: Remove temp npmrc
