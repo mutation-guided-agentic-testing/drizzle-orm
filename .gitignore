@@ -16,3 +16,5 @@ drizzle-seed/src/dev
 
 coverage
 .stryker-tmp
+reports
+.stryker-output
